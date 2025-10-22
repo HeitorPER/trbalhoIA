@@ -96,11 +96,9 @@ Para rodar este projeto, você precisará do Python, Pygame, PySwip e, o mais im
 
 3.  **Execute o Script:**
     ```bash
-    python gui_cs_pygame.py
+    python ./versaoFuncionando1.py
     ```
 
 4.  **Interaja com a Simulação:**
     * Clique em **"Gerar Novo Grid"** para criar um novo desafio aleatório.
     * Clique em **"Encontrar Caminho"** para o Prolog calcular a rota e o agente iniciar a animação.
-
-## 6. Estrutura dos Arquivos
