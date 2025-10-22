@@ -4,8 +4,7 @@ Este é um projeto de simulação de Inteligência Artificial que utiliza **Prol
 
 O objetivo é simular um agente (Terrorista) que deve navegar em um grid 2D, encontrar o caminho mais curto até um objetivo (Bombsite), enquanto desvia de obstáculos e de zonas de perigo criadas por Contra-Terroristas (CTs).
 
-![Insira um GIF ou Screenshot do seu projeto aqui!](<img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/c95682ed-84db-442c-a2da-82a1ed7540b5" />)
-*(Substitua a imagem acima por um screenshot ou GIF do seu jogo em ação)*
+(https://imgur.com/2S2GVjV)
 
 ## 1. Tecnologias Utilizadas
 
