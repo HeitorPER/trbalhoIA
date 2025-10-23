@@ -1,12 +1,12 @@
 import pygame
 import random
 from pyswip import Prolog
-import ast  # Usado para parsear a string do Prolog
-import os   # Usado para verificar se o arquivo existe
+import ast 
+import os  
 
 # --- Configurações Pygame ---
-GRID_DIM = 30       # Dimensão do grid (20x20)
-CELL_SIZE = 30      # Tamanho de cada célula em pixels
+GRID_DIM = 20      # Altere para o tamnho desejado
+CELL_SIZE = 40    # Tamanho de cada célula em pixels
 HUD_HEIGHT = 60     # Espaço no rodapé para botões
 
 WIDTH = GRID_DIM * CELL_SIZE
@@ -14,22 +14,22 @@ HEIGHT = GRID_DIM * CELL_SIZE
 SCREEN_HEIGHT = HEIGHT + HUD_HEIGHT
 
 # --- Configuração da Animação ---
-VELOCIDADE_NORMAL = 150 # Milissegundos por passo (normal)
-VELOCIDADE_RAPIDA = 75  # Milissegundos por passo (o dobro da velocidade)
+VELOCIDADE_NORMAL = 150 
+VELOCIDADE_RAPIDA = 75  
 
 # Cores (usadas como fallback se as imagens falharem)
 COLOR_WHITE = (255, 255, 255) 
 COLOR_BLACK = (0, 0, 0)
 COLOR_GRID = (200, 200, 200)
-COLOR_START = (0, 255, 0)       # Terrorista (Verde)
-COLOR_GOAL = (255, 0, 0)        # Bombsite B (Vermelho)
-COLOR_WAYPOINT = (255, 165, 0)  # Ponto A (Laranja)
-COLOR_OBSTACLE = (100, 100, 100) # Obstáculo (Cinza)
-COLOR_CT = (0, 0, 255)          # Cor de fallback para o CT (Azul)
-COLOR_DANGER = (255, 255, 150)  # Cor de fallback para a mira adjacente
-COLOR_PATH = (128, 0, 128)      # Caminho (Roxo)
+COLOR_START = (0, 255, 0)       
+COLOR_GOAL = (255, 0, 0)        
+COLOR_WAYPOINT = (255, 165, 0)  
+COLOR_OBSTACLE = (100, 100, 100) 
+COLOR_CT = (0, 0, 255)          
+COLOR_DANGER = (255, 255, 150)  
+COLOR_PATH = (128, 0, 128)      
 COLOR_BUTTON = (50, 50, 50)
-COLOR_BUTTON_TEXT = (255, 255, 255) # ### MUDANÇA: Cor para o texto do HUD ###
+COLOR_BUTTON_TEXT = (255, 255, 255) 
 
 # --- Função de Carregamento de Imagem ---
 
@@ -69,7 +69,7 @@ bombsite_pos_pygame = (0, 0)
 obstacles_pygame = []
 cts_pygame = []
 danger_zones = set()
-path_pygame = [] # O caminho completo encontrado pelo Prolog
+path_pygame = [] 
 
 # --- Variáveis de Estado da Animação ---
 agente_pos_atual = (0, 0)    
@@ -78,7 +78,7 @@ indice_caminho_atual = 0
 ultimo_movimento_tempo = 0  
 ponto_a_coletado = False      
 indice_ponto_a = -1
-total_passos_caminho = 0 # ### MUDANÇA: Nova variável para o HUD ###
+total_passos_caminho = 0 
 
 # Variáveis globais para armazenar as superfícies (imagens) dos assets
 ASSET_T = None
@@ -96,7 +96,7 @@ def generate_random_grid(dim=GRID_DIM):
     global grid_width, grid_height, start_pos_pygame, waypoint_pos_pygame, bombsite_pos_pygame, \
            obstacles_pygame, cts_pygame, path_pygame, danger_zones, \
            agente_pos_atual, animando_caminho, indice_caminho_atual, \
-           ponto_a_coletado, indice_ponto_a, total_passos_caminho # ### MUDANÇA ###
+           ponto_a_coletado, indice_ponto_a, total_passos_caminho 
 
     grid_width = dim
     grid_height = dim
@@ -146,8 +146,8 @@ def generate_random_grid(dim=GRID_DIM):
     indice_caminho_atual = 0
     ponto_a_coletado = False
     indice_ponto_a = -1
-    total_passos_caminho = 0 # ### MUDANÇA: Reseta o contador ###
-    # --- ################################### ---
+    total_passos_caminho = 0 
+
 
     print(f"Grid gerado: Início={start_pos_pygame}, PontoA={waypoint_pos_pygame}, Bombsite={bombsite_pos_pygame}")
     print(f"Obstáculos: {len(obstacles_pygame)}, CTs: {len(cts_pygame)}")
@@ -205,7 +205,7 @@ def solve_path():
     Encontra o caminho em duas etapas e INICIA a animação.
     """
     global path_pygame, agente_pos_atual, animando_caminho, indice_caminho_atual, ultimo_movimento_tempo, \
-           ponto_a_coletado, indice_ponto_a, total_passos_caminho # ### MUDANÇA ###
+           ponto_a_coletado, indice_ponto_a, total_passos_caminho 
     
     path_pygame = []
     agente_pos_atual = start_pos_pygame
@@ -213,7 +213,7 @@ def solve_path():
     indice_caminho_atual = 0
     ponto_a_coletado = False
     indice_ponto_a = -1
-    total_passos_caminho = 0 # ### MUDANÇA: Reseta ao tentar resolver ###
+    total_passos_caminho = 0 
     
     print("Consultando Prolog (Etapa 1: Início -> Ponto A)...")
     path1 = _run_prolog_query(start_pos_pygame, waypoint_pos_pygame)
@@ -233,11 +233,8 @@ def solve_path():
 
     path_pygame = path1 + path2[1:] 
     
-    if path_pygame:
-        # ### MUDANÇA: Define o total de passos ###
-        # Um caminho de N posições tem N-1 "passos" ou movimentos.
+    if path_pygame:   
         total_passos_caminho = len(path_pygame) - 1 
-        # ---
         animando_caminho = True
         ultimo_movimento_tempo = pygame.time.get_ticks()
         print(f"Caminho completo encontrado. Iniciando animação ({total_passos_caminho} passos).")
@@ -264,10 +261,10 @@ def draw_grid(screen):
             asset_para_desenhar = None
             fallback_color = None
 
-            if pos == waypoint_pos_pygame and not ponto_a_coletado: # Ponto A
+            if pos == waypoint_pos_pygame and not ponto_a_coletado: 
                 asset_para_desenhar = ASSET_BOMBSITE_A
                 fallback_color = COLOR_WAYPOINT
-            elif pos == bombsite_pos_pygame: # Ponto B
+            elif pos == bombsite_pos_pygame: 
                 asset_para_desenhar = ASSET_BOMBSITE_B
                 fallback_color = COLOR_GOAL
             elif pos in obstacles_pygame:
@@ -276,20 +273,17 @@ def draw_grid(screen):
             
             # --- CT no centro, mira ao redor ---
             elif pos in cts_pygame:
-                asset_para_desenhar = ASSET_CT      # Imagem do CT
+                asset_para_desenhar = ASSET_CT      
                 fallback_color = COLOR_CT
             elif pos in danger_zones:
-                asset_para_desenhar = ASSET_CROSSHAIR # Imagem da mira
+                asset_para_desenhar = ASSET_CROSSHAIR 
                 fallback_color = COLOR_DANGER
-            # --- ############################ ---
 
             if asset_para_desenhar:
                 screen.blit(asset_para_desenhar, rect)
             elif fallback_color:
                 pygame.draw.rect(screen, fallback_color, rect)
 
-            # 3. Desenha a borda da célula (opcional)
-            # pygame.draw.rect(screen, COLOR_GRID, rect, 1)
 
 
 def draw_path(screen):
@@ -307,7 +301,7 @@ def draw_path(screen):
 def draw_hud(screen, font):
     """Desenha os botões e o visualizador de passos."""
     
-    global total_passos_caminho, indice_caminho_atual, animando_caminho # ### MUDANÇA ###
+    global total_passos_caminho, indice_caminho_atual, animando_caminho 
 
     hud_rect = pygame.Rect(0, HEIGHT, WIDTH, HUD_HEIGHT)
     pygame.draw.rect(screen, COLOR_BUTTON, hud_rect)
@@ -325,27 +319,19 @@ def draw_hud(screen, font):
     text_solve_rect = text_solve.get_rect(center=btn_solve.center)
     screen.blit(text_solve, text_solve_rect)
     
-    # --- ### MUDANÇA: Visualizador de Passos (Direita) ### ---
+    # Visualizador de Passos (Direita)  ---
     texto_passos_str = ""
     if animando_caminho:
-        # Mostra o progresso (ex: "Passo: 5 / 20")
-        # +1 no índice para ser 1-based (Passo 1, 2, ...)
         texto_passos_str = f"Passo: {indice_caminho_atual + 1} / {total_passos_caminho}"
     elif total_passos_caminho > 0:
-        # Mostra o total (ex: "Total: 20 Passos")
         texto_passos_str = f"Total: {total_passos_caminho} Passos"
     else:
-        # Estado inicial ou sem caminho
         texto_passos_str = "Passos: --"
         
     # Renderiza o texto
-    texto_passos_surf = font.render(texto_passos_str, True, COLOR_BUTTON_TEXT) # Texto branco
-    
-    # Posiciona o texto no canto direito do HUD
-    # Alinhado à direita (midright), 20 pixels da borda, e centrado verticalmente no HUD
+    texto_passos_surf = font.render(texto_passos_str, True, COLOR_BUTTON_TEXT) 
     texto_passos_rect = texto_passos_surf.get_rect(midright=(WIDTH - 20, HEIGHT + (HUD_HEIGHT // 2)))
     screen.blit(texto_passos_surf, texto_passos_rect)
-    # --- ################################################# ---
     
     return btn_generate, btn_solve
 
@@ -418,7 +404,6 @@ def main():
                 else:
                     animando_caminho = False
                     print("Animação concluída.")
-        # --- ################################### ---
 
 
         # --- Lógica de Desenho ---
@@ -435,7 +420,7 @@ def main():
         if ASSET_T:
             screen.blit(ASSET_T, agente_rect)
         else:
-            pygame.draw.rect(screen, COLOR_START, agente_rect) # Fallback
+            pygame.draw.rect(screen, COLOR_START, agente_rect) 
         
         # 4. Desenha o HUD (botões e contador de passos)
         draw_hud(screen, font)
