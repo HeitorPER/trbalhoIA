@@ -65,8 +65,8 @@ Para rodar este projeto, você precisará do Python, Pygame, PySwip e, o mais im
 
 2.  **Clone ou baixe este repositório:**
     ```bash
-    git clone [URL_DO_SEU_REPOSITORIO]
-    cd [NOME_DA_PASTA_DO_PROJETO]
+    git clone https://github.com/HeitorPER/trbalhoIA
+    cd trbalhoIA
     ```
 
 3.  **Crie um Ambiente Virtual (Recomendado):**
